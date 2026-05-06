@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce - Catálogo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../CSS/cart-styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3H7bCOj2z4G88NTXKlc4/I0szZM2fU17Cqq6/LmBJ7/J1rFzSwjnxVnwT7lGgoDh/PoXY4p+K+A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <header class="header-top">
+      <nav class="navbar">
+        <div class="brand header-brand">
+          <img src="../IMG/logo.png" alt="Ecommerce Logo" class="logo-img">
+          <span>Ecommerce</span>
+        </div>
+        <button class="menu-toggle" aria-label="Mostrar menú" aria-expanded="false">☰</button>
+        <ul class="nav-list">
+          <li><a href="index.html">Principal</a></li>
+          <li><a href="index.html#quienes-somos">Quienes Somos</a></li>
+          <li><a href="catalogo.html">Catálogo</a></li>
+          <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+        <button class="cart-toggle" id="cart-btn" aria-label="Abrir carrito">
+          <img src="../IMG/carrito.png" alt="Carrito" class="cart-icon">
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="pricing" id="catalogo">
+        <h2><a href="catalogo.html" class="catalog-title-link">Catálogo de Ropa ➜</a></h2>
+        <p class="pricing-intro">Descubre nuestra colección de prendas sostenibles hechas con materiales ecológicos</p>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="product-image-container" data-product-id="1" data-product-slug="camiseta-ecologica">
+              <img src="../IMG/camiseta.jpg" alt="Camiseta Ecológica" class="product-image">
+              <div class="product-dot"></div>
+              <div class="product-price-overlay"><span class="currency">$</span><span class="amount">14.990</span></div>
+            </div>
+            <div class="product-info">
+              <h3>Camiseta Ecológica</h3>
+              <p class="product-description">Camiseta de algodón orgánico, cómoda y amigable con el medio ambiente.</p>
+              <button class="btn-plan" data-product-id="1" data-product-name="Camiseta Ecológica" data-product-price="14990">Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="pricing-card">
+            <div class="product-image-container" data-product-id="2" data-product-slug="pantalon-sostenible">
+              <img src="../IMG/pantalon.jpg" alt="Pantalón Sostenible" class="product-image">
+              <div class="product-dot"></div>
+              <div class="product-price-overlay"><span class="currency">$</span><span class="amount">24.990</span></div>
+            </div>
+            <div class="product-info">
+              <h3>Pantalón Sostenible</h3>
+              <p class="product-description">Pantalón hecho con fibras recicladas, resistente y ecológico.</p>
+              <button class="btn-plan" data-product-id="2" data-product-name="Pantalón Sostenible" data-product-price="24990">Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="pricing-card">
+            <div class="product-image-container" data-product-id="3" data-product-slug="vestido-verde">
+              <img src="../IMG/vestido.jpg" alt="Vestido Verde" class="product-image">
+              <div class="product-dot"></div>
+              <div class="product-price-overlay"><span class="currency">$</span><span class="amount">29.990</span></div>
+            </div>
+            <div class="product-info">
+              <h3>Vestido Verde</h3>
+              <p class="product-description">Vestido elegante fabricado con telas sostenibles y tintes naturales.</p>
+              <button class="btn-plan" data-product-id="3" data-product-name="Vestido Verde" data-product-price="29990">Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="pricing-card">
+            <div class="product-image-container" data-product-id="4" data-product-slug="chaqueta-ecologica">
+              <img src="../IMG/Chaqueta.webp" alt="Chaqueta Ecológica" class="product-image">
+              <div class="product-dot"></div>
+              <div class="product-price-overlay"><span class="currency">$</span><span class="amount">39.990</span></div>
+            </div>
+            <div class="product-info">
+              <h3>Chaqueta Ecológica</h3>
+              <p class="product-description">Chaqueta ligera de materiales reciclados, perfecta para cualquier clima.</p>
+              <button class="btn-plan" data-product-id="4" data-product-name="Chaqueta Ecológica" data-product-price="39990">Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="pricing-card">
+            <div class="product-image-container" data-product-id="5" data-product-slug="zapatos-sostenibles">
+              <img src="../IMG/zapatos.jpg" alt="Zapatos Sostenibles" class="product-image">
+              <div class="product-dot"></div>
+              <div class="product-price-overlay"><span class="currency">$</span><span class="amount">34.990</span></div>
+            </div>
+            <div class="product-info">
+              <h3>Zapatos Sostenibles</h3>
+              <p class="product-description">Zapatos cómodos hechos con cuero vegano y suelas recicladas.</p>
+              <button class="btn-plan" data-product-id="5" data-product-name="Zapatos Sostenibles" data-product-price="34990">Agregar al Carrito</button>
+            </div>
+          </div>
+          <div class="pricing-card">
+            <div class="product-image-container" data-product-id="6" data-product-slug="sombrero-eco">
+              <img src="../IMG/Sombrero.webp" alt="Sombrero Eco" class="product-image">
+              <div class="product-dot"></div>
+              <div class="product-price-overlay"><span class="currency">$</span><span class="amount">11.990</span></div>
+            </div>
+            <div class="product-info">
+              <h3>Sombrero Eco</h3>
+              <p class="product-description">Sombrero de paja orgánica, ideal para protegerte del sol de manera sostenible.</p>
+              <button class="btn-plan" data-product-id="6" data-product-name="Sombrero Eco" data-product-price="11990">Agregar al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-item">
+          <div class="brand footer-brand">
+            <img src="../IMG/logo.png" alt="Ecommerce Logo" class="logo-img">
+            <span>Ecommerce</span>
+          </div>
+        </div>
+        <div class="footer-item">
+          <h3>Redes Sociales</h3>
+          <div class="social-links">
+            <a href="#" title="Facebook" aria-label="Facebook"><img src="../IMG/facebook-brands-solid-full.svg" alt="Facebook" class="social-icon"></a>
+            <a href="#" title="X-Twitter" aria-label="X-Twitter"><img src="../IMG/x-twitter-brands-solid-full.svg" alt="X-Twitter" class="social-icon"></a>
+            <a href="#" title="Instagram" aria-label="Instagram"><img src="../IMG/instagram-brands-solid-full.svg" alt="Instagram" class="social-icon"></a>
+          </div>
+        </div>
+        <div class="footer-item">
+          <h3>Contacto</h3>
+          <p>Email: ejemplo@dominio.com</p>
+          <p>Teléfono: +56 9 1234 5678</p>
+          <p>Autor: Felipe O. Carvajal Jiménez</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Ecommerce. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <!-- Modal del Carrito -->
+    <div class="cart-modal" id="cart-modal">
+      <div class="cart-content">
+        <div class="cart-header">
+          <h2>Mi Carrito</h2>
+          <button class="cart-close" id="cart-close">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+          <p class="empty-cart">Tu carrito está vacío</p>
+        </div>
+        <div class="cart-footer">
+          <div class="cart-total">
+            <span>Total:</span>
+            <span class="total-amount">$0</span>
+          </div>
+          <button class="btn-checkout">Ir al Pago</button>
+        </div>
+      </div>
+    </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="../JS/products-data.js"></script>
+  <script src="../JS/script.js"></script>
+  </body>
+</html>
