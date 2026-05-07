@@ -163,9 +163,10 @@
 
     function addProductToCart() {
       const quantity = parseInt(document.getElementById('product-quantity').value);
+      const size = document.querySelector('input[name="size"]:checked').value;
       
       for (let i = 0; i < quantity; i++) {
-        window.addToCart(5, 'Zapatos Sostenibles', 34990);
+        window.addToCart(5, 'Zapatos Sostenibles', 34990, size);
       }
     }
   </script>

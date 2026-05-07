@@ -147,9 +147,10 @@
 
     function addProductToCart() {
       const quantity = parseInt(document.getElementById('product-quantity').value);
+      const size = document.querySelector('input[name="size"]:checked').value;
       
       for (let i = 0; i < quantity; i++) {
-        window.addToCart(6, 'Sombrero Eco', 11990);
+        window.addToCart(6, 'Sombrero Eco', 11990, size);
       }
     }
   </script>

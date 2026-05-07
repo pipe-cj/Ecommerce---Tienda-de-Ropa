@@ -155,9 +155,10 @@
 
     function addProductToCart() {
       const quantity = parseInt(document.getElementById('product-quantity').value);
+      const size = document.querySelector('input[name="size"]:checked').value;
       
       for (let i = 0; i < quantity; i++) {
-        window.addToCart(3, 'Vestido Verde', 29990);
+        window.addToCart(3, 'Vestido Verde', 29990, size);
       }
     }
   </script>

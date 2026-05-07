@@ -77,151 +77,165 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(section);
   });
 
-  // ===== LÓGICA DEL CARRITO =====
-  const cart = [];
-  
-  const cartBtn = document.getElementById('cart-btn');
-  const cartModal = document.getElementById('cart-modal');
-  const cartClose = document.getElementById('cart-close');
-  const cartItems = document.getElementById('cart-items');
-  const addToCartButtons = document.querySelectorAll('.btn-plan[data-product-id]');
+// ===== LÓGICA DEL CARRITO =====
+const cart = [];
+
+// Cargar carrito desde localStorage
+function loadCart() {
+  const savedCart = localStorage.getItem('ecommerce-cart');
+  if (savedCart) {
+    cart.length = 0;
+    cart.push(...JSON.parse(savedCart));
+    updateCartUI();
+  }
+}
+
+// Guardar carrito en localStorage
+function saveCart() {
+  localStorage.setItem('ecommerce-cart', JSON.stringify(cart));
+}
+
+// Actualizar la interfaz del carrito
+function updateCartUI() {
   const cartCount = document.getElementById('cart-count');
-  
-  // Cargar carrito desde localStorage
-  function loadCart() {
-    const savedCart = localStorage.getItem('ecommerce-cart');
-    if (savedCart) {
-      cart.length = 0;
-      cart.push(...JSON.parse(savedCart));
-      updateCartUI();
-    }
-  }
-  
-  // Guardar carrito en localStorage
-  function saveCart() {
-    localStorage.setItem('ecommerce-cart', JSON.stringify(cart));
-  }
-  
-  // Actualizar la interfaz del carrito
-  function updateCartUI() {
-    cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartItems = document.getElementById('cart-items');
+  if (cartCount) cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+  if (cartItems) {
     cartItems.innerHTML = '';
     
     if (cart.length === 0) {
       cartItems.innerHTML = '<p class="empty-cart">Tu carrito está vacío</p>';
-      document.querySelector('.btn-checkout').disabled = true;
+      const checkoutBtn = document.querySelector('.btn-checkout');
+      if (checkoutBtn) checkoutBtn.disabled = true;
     } else {
       cart.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item';
         itemElement.innerHTML = `
           <div class="cart-item-info">
-            <h3 class="cart-item-name">${item.name}</h3>
+            <h3 class="cart-item-name">${item.name}${item.size ? ' (Talla: ' + item.size + ')' : ''}</h3>
             <p class="cart-item-price">$${item.price.toLocaleString('es-CL')}</p>
           </div>
           <div class="cart-item-controls">
-            <button class="quantity-btn" onclick="decrementQuantity(${item.id})">-</button>
+            <button class="quantity-btn" onclick="decrementQuantity(${item.id}, '${item.size}')">-</button>
             <span class="quantity-display">${item.quantity}</span>
-            <button class="quantity-btn" onclick="incrementQuantity(${item.id})">+</button>
-            <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+            <button class="quantity-btn" onclick="incrementQuantity(${item.id}, '${item.size}')">+</button>
+            <button class="remove-btn" onclick="removeFromCart(${item.id}, '${item.size}')">✕</button>
           </div>
         `;
         cartItems.appendChild(itemElement);
       });
-      document.querySelector('.btn-checkout').disabled = false;
+      const checkoutBtn = document.querySelector('.btn-checkout');
+      if (checkoutBtn) checkoutBtn.disabled = false;
     }
     
     // Actualizar total
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    document.querySelector('.total-amount').textContent = `$${total.toLocaleString('es-CL')}`;
+    const totalAmount = document.querySelector('.total-amount');
+    if (totalAmount) {
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      totalAmount.textContent = `$${total.toLocaleString('es-CL')}`;
+    }
     
     saveCart();
   }
+}
+
+// Agregar producto al carrito
+window.addToCart = function(productId, productName, productPrice, size = null) {
+  const existingItem = cart.find(item => item.id === productId && item.size === size);
   
-  // Agregar producto al carrito
-  function addToCart(productId, productName, productPrice) {
-    const existingItem = cart.find(item => item.id === productId);
-    
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({
-        id: productId,
-        name: productName,
-        price: productPrice,
-        quantity: 1
-      });
-    }
-    
-    updateCartUI();
-    openCart();
-    showCartNotification(`${productName} agregado al carrito`);
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: productId,
+      name: productName,
+      price: productPrice,
+      quantity: 1,
+      size: size
+    });
   }
   
-  // Funciones globales para manejar cantidad
-  window.incrementQuantity = function(productId) {
-    const item = cart.find(i => i.id === productId);
-    if (item) {
-      item.quantity += 1;
-      updateCartUI();
-    }
-  };
-  
-  window.decrementQuantity = function(productId) {
-    const item = cart.find(i => i.id === productId);
-    if (item && item.quantity > 1) {
-      item.quantity -= 1;
-      updateCartUI();
-    }
-  };
-  
-  window.removeFromCart = function(productId) {
-    const index = cart.findIndex(i => i.id === productId);
-    if (index > -1) {
-      const itemName = cart[index].name;
-      cart.splice(index, 1);
-      updateCartUI();
-      showCartNotification(`${itemName} eliminado del carrito`);
-    }
-  };
-  
-  // Abrir carrito
-  function openCart() {
+  updateCartUI();
+  openCart();
+  showCartNotification(`${productName}${size ? ' (Talla: ' + size + ')' : ''} agregado al carrito`);
+};
+
+// Funciones globales para manejar cantidad
+window.incrementQuantity = function(productId, size) {
+  const item = cart.find(i => i.id === productId && i.size === size);
+  if (item) {
+    item.quantity += 1;
+    updateCartUI();
+  }
+};
+
+window.decrementQuantity = function(productId, size) {
+  const item = cart.find(i => i.id === productId && i.size === size);
+  if (item && item.quantity > 1) {
+    item.quantity -= 1;
+    updateCartUI();
+  }
+};
+
+window.removeFromCart = function(productId, size) {
+  const index = cart.findIndex(i => i.id === productId && i.size === size);
+  if (index > -1) {
+    const itemName = cart[index].name;
+    cart.splice(index, 1);
+    updateCartUI();
+    showCartNotification(`${itemName}${size ? ' (Talla: ' + size + ')' : ''} eliminado del carrito`);
+  }
+};
+
+// Abrir carrito
+function openCart() {
+  const cartModal = document.getElementById('cart-modal');
+  if (cartModal) {
     cartModal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-  
-  // Cerrar carrito
-  function closeCart() {
+}
+
+// Cerrar carrito
+function closeCart() {
+  const cartModal = document.getElementById('cart-modal');
+  if (cartModal) {
     cartModal.classList.remove('active');
     document.body.style.overflow = 'auto';
   }
+}
+
+// Mostrar notificación
+function showCartNotification(message) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    bottom: 150px;
+    right: 20px;
+    background: #000000ad;
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    z-index: 1001;
+    font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    animation: slideInUp 0.3s ease;
+  `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
   
-  // Mostrar notificación
-  function showCartNotification(message) {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #000000;
-      color: #ffffff;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      z-index: 1001;
-      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      animation: slideInUp 0.3s ease;
-    `;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.style.animation = 'slideOutDown 0.3s ease';
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
-  }
+  setTimeout(() => {
+    notification.style.animation = 'slideOutDown 0.3s ease';
+    setTimeout(() => notification.remove(), 300);
+  }, 1000);
+}
   
-  // Event listeners
+  // Event listeners del carrito
+  const cartBtn = document.getElementById('cart-btn');
+  const cartModal = document.getElementById('cart-modal');
+  const cartClose = document.getElementById('cart-close');
+  const addToCartButtons = document.querySelectorAll('.btn-plan[data-product-id]');
+  
   if (cartBtn) {
     cartBtn.addEventListener('click', openCart);
   }
@@ -230,36 +244,47 @@ document.addEventListener('DOMContentLoaded', () => {
     cartClose.addEventListener('click', closeCart);
   }
   
-  // Cerrar carrito al hacer click afuera
-  cartModal.addEventListener('click', (e) => {
-    if (e.target === cartModal) {
-      closeCart();
-    }
-  });
-  
-  // Agregar event listeners a los botones
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const productId = parseInt(this.getAttribute('data-product-id'));
-      const productName = this.getAttribute('data-product-name');
-      const productPrice = parseInt(this.getAttribute('data-product-price'));
-      
-      addToCart(productId, productName, productPrice);
-    });
-  });
-  
-  // ===== LÓGICA DE CLICK EN IMÁGENES DE PRODUCTOS =====
-  const productImageContainers = document.querySelectorAll('.product-image-container');
-  productImageContainers.forEach(container => {
-    container.addEventListener('click', function() {
-      const productSlug = this.getAttribute('data-product-slug');
-      if (productSlug) {
-        // Redirigir a la página del producto
-        window.location.href = `${productSlug}.html`;
+  if (cartModal) {
+    // Cerrar carrito al hacer click afuera
+    cartModal.addEventListener('click', (e) => {
+      if (e.target === cartModal) {
+        closeCart();
       }
     });
-  });
+  }
   
+  // Agregar event listeners a los botones (solo si existen, para páginas de productos)
+  if (addToCartButtons.length > 0) {
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', function(event) {
+        const productSlug = this.getAttribute('data-product-slug') || this.closest('.pricing-card')?.querySelector('.product-image-container')?.getAttribute('data-product-slug');
+        if (productSlug) {
+          window.location.href = `${productSlug}.html`;
+          return;
+        }
+
+        const productId = parseInt(this.getAttribute('data-product-id'));
+        const productName = this.getAttribute('data-product-name');
+        const productPrice = parseInt(this.getAttribute('data-product-price'));
+        
+        window.addToCart(productId, productName, productPrice);
+      });
+    });
+  }
+  
+  // Redirigir al producto al hacer clic en la imagen
+  const productImageContainers = document.querySelectorAll('.product-image-container');
+  if (productImageContainers.length > 0) {
+    productImageContainers.forEach(container => {
+      container.addEventListener('click', function() {
+        const productSlug = this.getAttribute('data-product-slug');
+        if (productSlug) {
+          window.location.href = `${productSlug}.html`;
+        }
+      });
+    });
+  }
+
   // Botón de checkout
   const checkoutBtn = document.querySelector('.btn-checkout');
   if (checkoutBtn) {
